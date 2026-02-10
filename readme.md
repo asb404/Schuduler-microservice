@@ -28,11 +28,11 @@ In a microservices system, having a dedicated scheduler:
 - **API Style:** REST
 - **Containerization:** Docker (optional)
 
-## 📌 API Endpoints (Sample)
+## 📌 API Endpoints 
 
-POST /api/schedules → Create a new schedule
-GET /api/schedules → Get all schedules
-GET /api/schedules/{id} → Get schedule by ID
-PUT /api/schedules/{id} → Update schedule
-DELETE /api/schedules/{id} → Delete schedule
-POST /api/schedules/{id}/run → Trigger schedule immediately
+- POST /api/schedules → Create a new schedule
+- GET /api/schedules → Get all schedules
+- GET /api/schedules/{id} → Get schedule by ID
+- PUT /api/schedules/{id} → Update schedule
+- DELETE /api/schedules/{id} → Delete schedule
+- POST /api/schedules/{id}/run → Trigger schedule immediately
