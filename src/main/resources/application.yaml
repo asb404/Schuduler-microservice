@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: programschuduler
+
+  data:
+    mongodb:
+      uri: mongodb://host.docker.internal:27017/mytv-scheduler
+
+  rabbitmq:
+    host: host.docker.internal
+    port: 5672
+    username: guest
+    password: guest
+
+  main:
+    web-application-type: reactive
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.data.mongodb: INFO
+    org.springframework.amqp: DEBUG
+    org.springframework.rabbit: DEBUG  
+
+server:
+  port: 9002
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      enabled: true
+
+scheduler:
+  poll:
+    rate: 10000

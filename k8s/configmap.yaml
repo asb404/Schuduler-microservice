@@ -1,0 +1,15 @@
+# k8s/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: scheduler-config
+  namespace: scheduler-ns
+data:
+  # You can either supply complete application.yml contents, or preferred env values
+  SPRING_APPLICATION_NAME: "programscheduler"
+  SPRING_DATA_MONGODB_URI: "mongodb://mongodb:27017/mytv-scheduler"
+  SPRING_RABBITMQ_HOST: "rabbitmq"
+  SPRING_RABBITMQ_PORT: "5672"
+  SPRING_MAIN_WEB_APPLICATION_TYPE: "reactive"
+  SERVER_PORT: "9002"
+  SCHEDULER_POLL_RATE: "10000"

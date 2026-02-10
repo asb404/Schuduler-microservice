@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: programscheduler-lb
+  namespace: scheduler-ns
+spec:
+  type: LoadBalancer
+  selector:
+    app: programscheduler
+  ports:
+    - name: http
+      port: 80        
+      targetPort: 9002
+      protocol: TCP

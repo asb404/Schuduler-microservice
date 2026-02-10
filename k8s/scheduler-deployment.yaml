@@ -1,0 +1,87 @@
+# k8s/scheduler-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: programscheduler
+  namespace: scheduler-ns
+  labels:
+    app: programscheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: programscheduler
+  template:
+    metadata:
+      labels:
+        app: programscheduler
+    spec:
+      containers:
+        - name: programscheduler
+          image: programscheduler:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9002
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: scheduler-config
+                  key: SPRING_APPLICATION_NAME
+            - name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: scheduler-config
+                  key: SPRING_DATA_MONGODB_URI
+            - name: SPRING_RABBITMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: scheduler-config
+                  key: SPRING_RABBITMQ_HOST
+            - name: SPRING_RABBITMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: scheduler-config
+                  key: SPRING_RABBITMQ_PORT
+            - name: SPRING_RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: scheduler-secret
+                  key: rabbitmq-username
+            - name: SPRING_RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scheduler-secret
+                  key: rabbitmq-password
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: scheduler-config
+                  key: SERVER_PORT
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9002
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9002
+            initialDelaySeconds: 30
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: programscheduler
+  namespace: scheduler-ns
+spec:
+  selector:
+    app: programscheduler
+  ports:
+    - port: 9002
+      targetPort: 9002
+      protocol: TCP
+      name: http
+  type: ClusterIP
